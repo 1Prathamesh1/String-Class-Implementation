@@ -13,46 +13,48 @@ class STRING{
 		p=new char[strlen(t)+1];
 		strcpy(p,t);
 	}
-	STRING(STRING &t){//deep copy
+	STRING(const STRING &t){//deep copy
 		p=new char [strlen(t.p)+1];
 		strcpy(p,t.p);
 	}
 	//s1=s2; s1.operator =(s2)
-	STRING operator =(STRING &t){//Assignment overload
-		p=new char[strlen(t.p)+1];
-		strcpy(p,t.p);
-		//return *this;
+	STRING& operator =(const STRING &t){//Assignment overload
+		if(this!=&t){
+		 	p=new char[strlen(t.p)+1];
+		    strcpy(p,t.p);   
+		}
+		return *this;
 	}
 	char& operator [](int i){
 		return p[i];
 	}
 	//s1<s2;//s1.operator(s2);
 	bool operator <(STRING &t){
-		if(my_strcmp(*this,t)>0)
-		return false;
-		else
-		return true; 
+		if(my_strcmp(*this,t)<0)
+            return true;
+        else
+            return false;
 	}
 	//s1>s2;//s1.operator(s2);
 	bool operator >(STRING &t){
-		if(my_strcmp(*this,t)<0)
-		return false;
-		else
-		return true; 
+	    if(my_strcmp(*this,t)>0)
+            return true;
+         else
+            return false;
 	}
 	//s1>=s2//s1.operator(s2);
 	bool operator >=(STRING &t){
-		if(my_strcmp(*this,t)<=0)
-		return false;
-		else
+		if(my_strcmp(*this,t)>=0)
 		return true;
+		else
+		return false;
 	}
 	//s1<=s2//s1.operator(s2);
 	bool operator <=(STRING &t){
-		if(my_strcmp(*this,t)>=0)
-		return false;
-		else
+		if(my_strcmp(*this,t)<=0)
 		return true;
+		else
+		return false;
 	}
 	//s1==s2//s1.operator(s2);
 	bool operator ==(STRING &t){
@@ -68,16 +70,13 @@ class STRING{
 		else
 		return false;
 	}
-	STRING& operator +(STRING &t){//= overload
-		STRING temp;
-		temp.p=new char [strlen(p)+strlen(t.p)+1];
-		my_strcpy(temp,*this);
-		strcat(temp.p,t.p);
-		delete []p;	
-		p=new char [strlen(temp.p)+1];
-		my_strcpy(*this,temp);
-		return temp;
-	}
+	STRING operator +(STRING &t){
+        STRING temp;
+        temp.p=new char[strlen(p)+strlen(t.p)+1];
+        strcpy(temp.p,p);
+        strcat(temp.p,t.p);
+        return temp;
+    }
 	void getData(){
 		cout<<p<<endl;
 	}
@@ -201,7 +200,6 @@ void my_strncat(STRING & a,STRING & b,int n){
 	temp.p=new char [strlen(a.p)+n+1];
 	int len,i;
 	for(len=0;a.p[len];len++);
-	len--;
 	
 	my_strcpy(temp,a);
 	for(i=0;i<n;i++){
@@ -246,7 +244,7 @@ int my_strcmp(STRING & a,STRING & b){
 	int i;
 	for(i=0;a.p[i] && b.p[i];i++){
 		if(a.p[i]!=b.p[i])
-		return a.p[i];
+		return a.p[i]-b.p[i];
 	}
 	
 	if(a.p[i] || b.p[i])
