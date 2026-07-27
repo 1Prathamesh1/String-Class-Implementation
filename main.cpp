@@ -25,6 +25,13 @@ class STRING{
 		}
 		return *this;
 	}
+	STRING operator +(STRING &t){
+        STRING temp;
+        temp.p=new char[strlen(p)+strlen(t.p)+1];
+        strcpy(temp.p,p);
+        strcat(temp.p,t.p);
+        return temp;
+    }
 	char& operator [](int i){
 		return p[i];
 	}
@@ -70,13 +77,6 @@ class STRING{
 		else
 		return false;
 	}
-	STRING operator +(STRING &t){
-        STRING temp;
-        temp.p=new char[strlen(p)+strlen(t.p)+1];
-        strcpy(temp.p,p);
-        strcat(temp.p,t.p);
-        return temp;
-    }
 	void getData(){
 		cout<<p<<endl;
 	}
@@ -106,8 +106,20 @@ class STRING{
 
 ////////////////////////////////////////////
 int main(){
-	STRING s1("abcdef"),s2("ghijkl"),s3,s4,s5;
-	s5=s2+s1;
+	STRING s1("abcdef"),s2("ABCD"),s3,s4,s5;
+	bool r;
+	r=s1<s2;
+	cout<<"s1 < s2 = "<<boolalpha<<r<<endl;
+	r=s1>s2;
+	cout<<"s1 > s2 = "<<boolalpha<<r<<endl;
+	r=s1==s2;
+	cout<<"s1 == s2 = "<<boolalpha<<r<<endl;
+	r=s1!=s2;
+	cout<<"s1 != s2 = "<<boolalpha<<r<<endl;
+
+	s4=s1+s2;
+	s5=s4;
+	s4.getData();
 	s5.getData();
 }
 ////////////////////////////////////////////
