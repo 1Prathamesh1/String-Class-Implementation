@@ -106,7 +106,7 @@ class STRING{
 
 ////////////////////////////////////////////
 int main(){
-	STRING s1("abcdef"),s2("ABCD"),s3,s4,s5;
+	STRING s1("abcdef"),s2("ABCD"),s3,s4,s5,s6;
 	bool r;
 	r=s1<s2;
 	cout<<"s1 < s2 = "<<boolalpha<<r<<endl;
@@ -117,6 +117,10 @@ int main(){
 	r=s1!=s2;
 	cout<<"s1 != s2 = "<<boolalpha<<r<<endl;
 
+    cout<<"Enter string=";
+    cin>>s6;
+    cout<<"Entered string is "<<endl;
+    cout<<s6;
 	s4=s1+s2;
 	s5=s4;
 	s4.getData();
@@ -223,10 +227,31 @@ void my_strncat(STRING & a,STRING & b,int n){
 }
 
 istream& operator >>(istream &in,STRING &s){
-	s.p=new char [30];
-	in>>s.p;
+    FILE *fp=fopen("abc.txt","w+");
+    char ch;
+    while(1){
+        in.get(ch);
+        if(ch=='\n')
+            break;
+        fputc(ch,fp);
+    }
+    int n=ftell(fp);
+    if(s.p!=nullptr){
+        delete []s.p;
+    }
+    s.p=new char[n+1];
+    rewind(fp);
+    int i=0;
+    while((ch=fgetc(fp))!=EOF)
+        s.p[i++]=ch;
+    s.p[i]='\0';
+    
+    fclose(fp);
+    remove("abc.txt");
+
 	return in;
 }
+
 ostream& operator <<(ostream &out,STRING &s){
 	out<<s.p;
 	return out;
